@@ -174,6 +174,9 @@ impl<'a> Format<'a> {
             },
             MpvInternalFormat::MPV_FORMAT_STRING => {
                 let char_ptr = unsafe {*(pointer as *mut *mut c_char)};
+                if char_ptr.is_null() {
+                    return Format::Str("");
+                }
                 Format::Str(unsafe {
                     CStr::from_ptr(char_ptr)
                          .to_str()
@@ -183,6 +186,9 @@ impl<'a> Format<'a> {
             },
             MpvInternalFormat::MPV_FORMAT_OSD_STRING => {
                 let char_ptr = unsafe{ *(pointer as *mut *mut c_char)};
+                if char_ptr.is_null() {
+                    return Format::OsdStr("");
+                }
                 Format::OsdStr(unsafe {
                     CStr::from_ptr(char_ptr)
                          .to_str()
